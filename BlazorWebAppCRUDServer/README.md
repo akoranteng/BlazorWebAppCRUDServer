@@ -1,65 +1,42 @@
-﻿📘 EF Core Setup — Branch 01-efcore-setup
-🎯 Purpose of This Branch
-This branch establishes the data foundation for the Blazor Web App CRUD project.
-It introduces Entity Framework Core, configures the database connection, defines the domain model, and prepares the project for database migrations.
-This is the first major milestone in the curriculum and sets the stage for CRUD operations in the next branch.
+﻿# 02 - Product CRUD Pages
 
-✅ What Was Implemented in This Branch
-1. EF Core Packages Installed
-Stable .NET 9–compatible EF Core packages were added:
-- Microsoft.EntityFrameworkCore
-- Microsoft.EntityFrameworkCore.SqlServer
-- - Microsoft.EntityFrameworkCore.Tools
-These were pinned to avoid preview version conflicts
+This branch implements the first interactive UI components of the Blazor CRUD application.  
+It builds on the EF Core foundation established in the previous branch.
 
-2. Connection String Added
-Configured LocalDB for easy inspection in Visual Studio’s Server Explorer:
-"ConnectionStrings": {
-  "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=BlazorCRUD;Trusted_Connection=True;"
-}
+## Goals
+- Display a list of products from the database
+- Create a new product using a form
+- Add navigation links to access CRUD pages
+- Use dependency injection to access AppDbContext
+- Apply basic validation and error handling
 
-This ensures a friction‑free development and teaching experience.
-3. Domain Model Created
-Models/Product.cs defines the core entity for this module:
-- Id — primary key
-- Name — product name
-- Price — decimal with precision (18,2)
-This model will be used throughout the CRUD workflow
-- 
-- 4. AppDbContext Added
-Data/AppDbContext.cs includes:
-- DbSet<Product> for EF Core tracking
-- Decimal precision configuration for Price
-- A clean, minimal EF Core context aligned with .NET 9 patterns
+---
 
-5. EF Core Registered in Program.cs
-The DbContext is registered using the minimal hosting model:
+## Features Implemented in This Branch
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+### 1. Products List Page (`Products.razor`)
+- Loads products asynchronously from the database
+- Displays results in a clean table layout
+- Includes navigation to the Create page
+- Prepares placeholders for Edit/Delete actions
 
-6. Project Builds Cleanly
-All namespaces, folders, and references were aligned:
-- /Models folder
-- /Data folder
-- Correct namespaces
-- Clean Program.cs
-- No build errors
-This ensures a stable foundation for migrations.
+### 2. Create Product Page (`CreateProduct.razor`)
+- Form with Name, Description, Price, and Quantity
+- Validation for required fields
+- Saves new product to the database
+- Redirects back to the Products list
 
-🧪 Next Step: Run the Initial Migration
-Once this branch is committed and pushed, run the following in Package Manager Console:
-Add-Migration InitialCreate
-Update-Database
+### 3. Navigation Updates
+- Adds a “Products” link to the sidebar
+- Ensures consistent routing across the app
 
-This will create:
-- BlazorCRUD database
-- Products table
-- __EFMigrationsHistory table
+---
 
+## Next Steps (Future Branches)
+- Edit product page
+- Delete confirmation page
+- UI polish and layout improvements
+- Validation enhancements
 
-
-
-
-
-
+This branch completes the first half of the CRUD workflow:  
+**Create → List**
