@@ -1,0 +1,56 @@
+﻿@using BlazorWebAppCRUDServer.Data
+@using BlazorWebAppCRUDServer.Models
+@using Microsoft.EntityFrameworkCore
+
+@page "/products"
+@inject AppDbContext _context
+
+<h3>Products</h3>
+
+<a class="btn btn-primary mb-3" href="/products/create">Create New Product</a>
+
+@if (products == null)
+{
+    <p>Loading...</p>
+}
+else if (!products.Any())
+{
+    <p>No products found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in products)
+            {
+                <tr>
+                    <td>@p.Name</td>
+                    <td>@p.Description</td>
+                    <td>@p.Price</td>
+                    <td>@p.Quantity</td>
+                    <td>
+                        <!-- Edit/Delete will be added in the next branch -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Product>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await _context.Products.ToListAsync();
+    }
+}
