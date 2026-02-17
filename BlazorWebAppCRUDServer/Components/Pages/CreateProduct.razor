@@ -1,0 +1,52 @@
+﻿@page "/products/create"
+@rendermode InteractiveServer
+@using BlazorWebAppCRUDServer.Data
+@using BlazorWebAppCRUDServer.Models
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext _context
+@inject NavigationManager Nav
+
+<h3>Create Product</h3>
+<EditForm Model="product"
+                                 OnValidSubmit="HandleSubmit"
+                                 FormName="CreateProductForm">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+
+
+
+    <div class="mb-3">
+        <label>Name</label>
+        <InputText class="form-control" @bind-Value="product.Name" />
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        <InputText class="form-control" @bind-Value="product.Description" />
+    </div>
+
+    <div class="mb-3">
+        <label>Price</label>
+        <InputNumber class="form-control" @bind-Value="product.Price" />
+    </div>
+
+    <div class="mb-3">
+        <label>Quantity</label>
+        <InputNumber class="form-control" @bind-Value="product.Quantity" />
+    </div>
+
+    <button class="btn btn-success">Save</button>
+</EditForm>
+
+@code {
+    Product product = new();
+
+    private async Task HandleSubmit()
+    {
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+        Nav.NavigateTo("/products");
+    }
+}
