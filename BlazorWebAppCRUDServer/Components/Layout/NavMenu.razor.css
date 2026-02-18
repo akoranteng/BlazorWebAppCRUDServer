@@ -102,4 +102,15 @@
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
     }
+
+    .nav-item {
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    .nav-link {
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+
 }

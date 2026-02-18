@@ -1,42 +1,23 @@
-﻿# 02 - Product CRUD Pages
+﻿# Sidebar Navigation Enhancements
 
-This branch implements the first interactive UI components of the Blazor CRUD application.  
-It builds on the EF Core foundation established in the previous branch.
+This branch adds a polished navigation experience to the Blazor Web App by improving the sidebar layout and making the Products module easily accessible.
 
-## Goals
-- Display a list of products from the database
-- Create a new product using a form
-- Add navigation links to access CRUD pages
-- Use dependency injection to access AppDbContext
-- Apply basic validation and error handling
+## What’s Included
 
----
+- Added **Products** link to the sidebar (`NavMenu.razor`)
+- Integrated a custom **Products icon** from the `wwwroot/images` folder
+- Reduced vertical spacing between navigation items for a cleaner layout
+- Scoped CSS updates in `NavMenu.razor.css` to keep styling modular
 
-## Features Implemented in This Branch
+## Why This Matters
 
-### 1. Products List Page (`Products.razor`)
-- Loads products asynchronously from the database
-- Displays results in a clean table layout
-- Includes navigation to the Create page
-- Prepares placeholders for Edit/Delete actions
+This milestone improves overall usability by making the Products page discoverable from the main navigation.  
+It also demonstrates:
+- How to use **scoped CSS** in Blazor  
+- How to serve static assets from `wwwroot`  
+- How to enhance UI clarity with icons and spacing adjustments  
 
-### 2. Create Product Page (`CreateProduct.razor`)
-- Form with Name, Description, Price, and Quantity
-- Validation for required fields
-- Saves new product to the database
-- Redirects back to the Products list
+## Next Steps
 
-### 3. Navigation Updates
-- Adds a “Products” link to the sidebar
-- Ensures consistent routing across the app
-
----
-
-## Next Steps (Future Branches)
-- Edit product page
-- Delete confirmation page
-- UI polish and layout improvements
-- Validation enhancements
-
-This branch completes the first half of the CRUD workflow:  
-**Create → List**
+- Merge this branch into `main`
+- Begin the next module: Edit/Delete product actions or UI polish
