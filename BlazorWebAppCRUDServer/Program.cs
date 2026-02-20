@@ -1,7 +1,6 @@
-using BlazorWebAppCRUDServer.Components;
+﻿using BlazorWebAppCRUDServer.Components;
 using BlazorWebAppCRUDServer.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Register Razor Components (Server mode)
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -22,6 +22,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// ⭐ REQUIRED because your root endpoint has antiforgery metadata
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()

@@ -16,6 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Components\Pages\ProductsPages\" />
 	  <Folder Include="wwwroot\images\" />
 	</ItemGroup>
 
