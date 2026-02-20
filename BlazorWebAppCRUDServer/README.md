@@ -1,23 +1,49 @@
-﻿# Sidebar Navigation Enhancements
+﻿# Blazor Web App CRUD Server (.NET 9)
 
-This branch adds a polished navigation experience to the Blazor Web App by improving the sidebar layout and making the Products module easily accessible.
+A clean, fully functional CRUD application built with the new **Blazor Web App** model in .NET 9.  
+This project demonstrates:
 
-## What’s Included
+- Create, Read, Update, Delete operations  
+- EF Core integration  
+- Interactive render modes  
+- Razor component routing  
+- Clean UI with Bootstrap  
+- A stable, production-ready CRUD pipeline  
 
-- Added **Products** link to the sidebar (`NavMenu.razor`)
-- Integrated a custom **Products icon** from the `wwwroot/images` folder
-- Reduced vertical spacing between navigation items for a cleaner layout
-- Scoped CSS updates in `NavMenu.razor.css` to keep styling modular
+## Features
 
-## Why This Matters
+### ✔ Create Product  
+Interactive form with validation and EF Core persistence.
 
-This milestone improves overall usability by making the Products page discoverable from the main navigation.  
-It also demonstrates:
-- How to use **scoped CSS** in Blazor  
-- How to serve static assets from `wwwroot`  
-- How to enhance UI clarity with icons and spacing adjustments  
+### ✔ Edit Product  
+Loads an existing product by ID, updates values, and saves changes.
+
+### ✔ Delete Product  
+Confirmation page with safe delete action.
+
+### ✔ Product List  
+Displays all products with Edit/Delete actions.
+
+## Architecture Notes
+
+This project uses the new Blazor Web App model, which requires:
+
+- `@rendermode InteractiveServer` for forms  
+- Unique `FormName` attributes for `<EditForm>`  
+- Clean routing (`@page "/products/create"`, etc.)  
+- EF Core DbContext injection via `Program.cs`
 
 ## Next Steps
 
-- Merge this branch into `main`
-- Begin the next module: Edit/Delete product actions or UI polish
+- Add validation  
+- Add toast notifications  
+- Add sorting/filtering  
+- Add pagination  
+- Add categories  
+- Add authentication  
+
+---
+
+## Milestone
+
+As of this commit, **all CRUD operations are fully functional** and the database is clean.

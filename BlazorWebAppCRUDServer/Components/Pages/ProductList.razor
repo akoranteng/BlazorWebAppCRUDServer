@@ -1,17 +1,16 @@
-﻿@using BlazorWebAppCRUDServer.Data
+﻿@page "/products"
+@using BlazorWebAppCRUDServer.Data
 @using BlazorWebAppCRUDServer.Models
 @using Microsoft.EntityFrameworkCore
-
-@page "/products"
 @inject AppDbContext _context
 
 <h3>Products</h3>
 
-<a class="btn btn-primary mb-3" href="/products/create">Create New Product</a>
+<a href="/products/create" class="btn btn-success mb-3">Add New Product</a>
 
 @if (products == null)
 {
-    <p>Loading...</p>
+    <p><em>Loading...</em></p>
 }
 else if (!products.Any())
 {
@@ -38,7 +37,8 @@ else
                     <td>@p.Price</td>
                     <td>@p.Quantity</td>
                     <td>
-                        <!-- Edit/Delete will be added in the next branch -->
+                        <a href="/products/edit/@p.Id" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="/products/delete/@p.Id" class="btn btn-sm btn-danger ms-2">Delete</a>
                     </td>
                 </tr>
             }
@@ -47,7 +47,7 @@ else
 }
 
 @code {
-    List<Product>? products;
+    private List<Product> products;
 
     protected override async Task OnInitializedAsync()
     {
