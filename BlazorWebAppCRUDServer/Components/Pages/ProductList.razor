@@ -1,35 +1,63 @@
 ﻿@page "/products"
-@using BlazorWebAppCRUDServer.Data
-@using BlazorWebAppCRUDServer.Models
-@using Microsoft.EntityFrameworkCore
-@inject AppDbContext _context
+@rendermode InteractiveServer
+
+@using BlazorWebAppCRUDServer.Services
+@inject IProductService ProductService
 
 <h3>Products</h3>
+<a class="btn btn-primary mb-3" href="/products/create">Add New</a>
 
-<a href="/products/create" class="btn btn-success mb-3">Add New Product</a>
 
-@if (products == null)
-{
-    <p><em>Loading...</em></p>
-}
-else if (!products.Any())
-{
-    <p>No products found.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var p in products)
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                <button class="btn btn-link p-0" @onclick='() => SortBy("Name")'>
+                    Name
+                    @(CurrentSortBy == "Name"
+                                        ? (CurrentSortDirection == "asc" ? "▲" : "▼")
+                                        : "↕")
+                </button>
+            </th>
+
+
+
+            <th>
+                <button class="btn btn-link p-0" @onclick='() => SortBy("Description")'>
+                    Description
+                    @(CurrentSortBy == "Description"
+                                        ? (CurrentSortDirection == "asc" ? "▲" : "▼")
+                                        : "↕")
+                </button>
+            </th>
+
+            <th>
+                <button class="btn btn-link p-0" @onclick='() => SortBy("Price")'>
+                    Price
+                    @(CurrentSortBy == "Price"
+                                        ? (CurrentSortDirection == "asc" ? "▲" : "▼")
+                                        : "↕")
+                </button>
+            </th>
+
+            <th>
+                <button class="btn btn-link p-0" @onclick='() => SortBy("Quantity")'>
+                    Quantity
+                    @(CurrentSortBy == "Quantity"
+                                        ? (CurrentSortDirection == "asc" ? "▲" : "▼")
+                                        : "↕")
+                </button>
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+  
+
+    <tbody>
+        @if (Products is not null)
+        {
+            @foreach (var p in Products)
             {
                 <tr>
                     <td>@p.Name</td>
@@ -37,20 +65,40 @@ else
                     <td>@p.Price</td>
                     <td>@p.Quantity</td>
                     <td>
-                        <a href="/products/edit/@p.Id" class="btn btn-sm btn-primary">Edit</a>
-                        <a href="/products/delete/@p.Id" class="btn btn-sm btn-danger ms-2">Delete</a>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="/products/edit/@p.Id">Edit</a>
+                        <a class="btn btn-sm btn-danger ms-2" href="/products/delete/@p.Id">Delete</a>
+                    </td>
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+</table>
+
 
 @code {
-    private List<Product> products;
+    private List<Product> Products = new();
+    private string CurrentSortBy = "Name";
+    private string CurrentSortDirection = "asc";
 
     protected override async Task OnInitializedAsync()
     {
-        products = await _context.Products.ToListAsync();
+        Products = await ProductService.GetProductsAsync(CurrentSortBy, CurrentSortDirection);
+    }
+
+    private async Task SortBy(string column)
+    {
+        if (CurrentSortBy == column)
+        {
+            CurrentSortDirection = CurrentSortDirection == "asc" ? "desc" : "asc";
+        }
+        else
+        {
+            CurrentSortBy = column;
+            CurrentSortDirection = "asc";
+        }
+
+        Products = await ProductService.GetProductsAsync(CurrentSortBy, CurrentSortDirection);
     }
 }
