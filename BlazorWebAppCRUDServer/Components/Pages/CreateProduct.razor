@@ -39,7 +39,7 @@
 
     private async Task HandleValidSubmit()
     {
-        await ProductService.AddProductAsync(product);
+        await ProductService.CreateProductAsync(product);
         NavigationManager.NavigateTo("/products");
     }
 }

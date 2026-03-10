@@ -13,57 +13,85 @@ namespace BlazorWebAppCRUDServer.Services
             _context = context;
         }
 
-        public async Task<List<Product>> GetProductsAsync(string sortBy, string sortDirection)
+        // ---------------------------------------------------------
+        // PAGINATED + SORTED PRODUCT LIST
+        // ---------------------------------------------------------
+        public async Task<List<Product>> GetProductsAsync(
+            string sortBy,
+            string direction,
+            int page,
+            int pageSize)
         {
-            IQueryable<Product> query = _context.Products;
+            var query = _context.Products.AsQueryable();
 
-            query = (sortBy, sortDirection) switch
+            // Sorting logic
+            query = sortBy switch
             {
-                ("Name", "asc") => query.OrderBy(p => p.Name),
-                ("Name", "desc") => query.OrderByDescending(p => p.Name),
+                "Name" => direction == "asc"
+                    ? query.OrderBy(p => p.Name)
+                    : query.OrderByDescending(p => p.Name),
 
-                ("Description", "asc") => query.OrderBy(p => p.Description),
-                ("Description", "desc") => query.OrderByDescending(p => p.Description),
+                "Description" => direction == "asc"
+                    ? query.OrderBy(p => p.Description)
+                    : query.OrderByDescending(p => p.Description),
 
-                ("Price", "asc") => query.OrderBy(p => p.Price),
-                ("Price", "desc") => query.OrderByDescending(p => p.Price),
+                "Price" => direction == "asc"
+                    ? query.OrderBy(p => p.Price)
+                    : query.OrderByDescending(p => p.Price),
 
-                ("Quantity", "asc") => query.OrderBy(p => p.Quantity),
-                ("Quantity", "desc") => query.OrderByDescending(p => p.Quantity),
+                "Quantity" => direction == "asc"
+                    ? query.OrderBy(p => p.Quantity)
+                    : query.OrderByDescending(p => p.Quantity),
 
-                _ => query.OrderBy(p => p.Id)
+                _ => query
             };
 
-            return await query.ToListAsync();
+            // Pagination
+            return await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
-        public async Task AddProductAsync(Product product)
+        // ---------------------------------------------------------
+        // TOTAL COUNT (for pagination)
+        // ---------------------------------------------------------
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _context.Products.CountAsync();
+        }
+
+        // ---------------------------------------------------------
+        // CRUD OPERATIONS
+        // ---------------------------------------------------------
+        public async Task<Product?> GetProductByIdAsync(int id)
+        {
+            return await _context.Products.FindAsync(id);
+        }
+
+        public async Task<Product> CreateProductAsync(Product product)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+            return product;
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public async Task<Product> UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
+            return product;
         }
 
-        public async Task DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(int id)
         {
             var product = await _context.Products.FindAsync(id);
-            if (product is not null)
-            {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-            }
+            if (product == null)
+                return false;
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+            return true;
         }
-
-        public async Task<Product?> GetProductByIdAsync(int id)
-        {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-        }
-
-
     }
 }
